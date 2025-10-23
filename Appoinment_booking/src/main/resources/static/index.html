@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Clinic - Healthcare Management System</title>
+    
+    <style>
+        /* ============================================
+           RESET & GLOBAL STYLES
+        ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Hide all views by default */
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* ============================================
+           LANDING PAGE STYLES
+        ============================================ */
+        .landing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .landing-header {
+            text-align: center;
+            color: white;
+            padding: 40px 0;
+        }
+
+        .landing-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .hero {
+            background: white;
+            border-radius: 10px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin: 40px 0;
+        }
+
+        .hero h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            margin: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f093fb;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #e67ce8;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        /* ============================================
+           FORM STYLES
+        ============================================ */
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .form-container h2 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .form-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        /* ============================================
+           DASHBOARD STYLES
+        ============================================ */
+        .dashboard {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 12px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background: #ecf0f1;
+            overflow-y: auto;
+        }
+
+        .main-content header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .main-content header h1 {
+            color: #2c3e50;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        /* ============================================
+           TABLE STYLES
+        ============================================ */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+         LANDING PAGE VIEW
+    ============================================ -->
+    <div id="landingView" class="view active">
+        <div class="landing-container">
+            <header class="landing-header">
+                <h1>🏥 Campus Clinic Healthcare Management System</h1>
+                <p>Book appointments with doctors easily</p>
+            </header>
+            
+            <div class="hero">
+                <h2>Welcome to Campus Clinic</h2>
+                <p>Manage your healthcare appointments efficiently</p>
+                
+                <div class="buttons">
+                    <button onclick="showView('loginView')" class="btn btn-primary">Login</button>
+                    <button onclick="showView('registerView')" class="btn btn-secondary">Register</button>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h3>📅 Book Appointments</h3>
+                    <p>Schedule appointments with available doctors</p>
+                </div>
+                <div class="feature-card">
+                    <h3>👨‍⚕️ View Doctors</h3>
+                    <p>Browse doctors by specialization</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Track History</h3>
+                    <p>View your appointment history</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         REGISTER VIEW
+    ============================================ -->
+    <div id="registerView" class="view">
+        <div class="form-container">
+            <h2>Register New Account</h2>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="regName">Full Name</label>
+                    <input type="text" id="regName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" required minlength="8">
+                </div>
+                
+                <div class="form-group">
+                    <label for="regContact">Contact Number</label>
+                    <input type="tel" id="regContact" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Register</button>
+                
+                <p class="form-footer">
+                    Already have an account? <a onclick="showView('loginView')">Login here</a>
+                </p>
+            </form>
+            
+            <div id="regMessage" class="message"></div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         LOGIN VIEW
+    ============================================ -->
+    <div id="loginView" class="view">
+        <div class="form-container">
+            <h2>Login to Your Account</h2>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Login</button>
+                
+                <p class="form-footer">
+                    Don't have an account? <a onclick="showView('registerView')">Register here</a>
+                </p>
+            </form>
+            
+            <div id="loginMessage" class="message"></div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         USER DASHBOARD VIEW
+    ============================================ -->
+    <div id="userDashboardView" class="view">
+        <div class="dashboard">
+            <nav class="sidebar">
+                <h2>Campus Clinic</h2>
+                <ul>
+                    <li><a onclick="showUserSection('userProfile')">My Profile</a></li>
+                    <li><a onclick="showUserSection('userDoctors')">View Doctors</a></li>
+                    <li><a onclick="showUserSection('userAppointments')">My Appointments</a></li>
+                    <li><a onclick="showUserSection('userBook')">Book Appointment</a></li>
+                    <li><a onclick="logout()">Logout</a></li>
+                </ul>
+            </nav>
+            
+            <main class="main-content">
+                <header>
+                    <h1>Welcome, <span id="userName"></span></h1>
+                </header>
+                
+                <!-- User Profile Section -->
+                <section id="userProfile" class="section active">
+                    <h2>My Profile</h2>
+                    <div id="profileData"></div>
+                </section>
+                
+                <!-- User Doctors Section -->
+                <section id="userDoctors" class="section">
+                    <h2>Available Doctors</h2>
+                    <div id="userDoctorsList"></div>
+                </section>
+                
+                <!-- User Appointments Section -->
+                <section id="userAppointments" class="section">
+                    <h2>My Appointments</h2>
+                    <div id="userAppointmentsList"></div>
+                </section>
+                
+                <!-- Book Appointment Section -->
+                <section id="userBook" class="section">
+                    <h2>Book New Appointment</h2>
+                    <form id="bookForm">
+                        <div class="form-group">
+                            <label for="doctorSelect">Select Doctor</label>
+                            <select id="doctorSelect" required></select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="appointmentDate">Date</label>
+                            <input type="date" id="appointmentDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="appointmentTime">Time</label>
+                            <input type="time" id="appointmentTime" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reason">Reason for Visit</label>
+                            <textarea id="reason" rows="4" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Book Appointment</button>
+                    </form>
+                    <div id="bookMessage" class="message"></div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- ============================================
+         ADMIN DASHBOARD VIEW
+    ============================================ -->
+    <div id="adminDashboardView" class="view">
+        <div class="dashboard">
+            <nav class="sidebar">
+                <h2>Admin Panel</h2>
+                <ul>
+                    <li><a onclick="showAdminSection('adminUsers')">Manage Users</a></li>
+                    <li><a onclick="showAdminSection('adminDoctors')">Manage Doctors</a></li>
+                    <li><a onclick="showAdminSection('adminAppointments')">All Appointments</a></li>
+                    <li><a onclick="showAdminSection('adminReports')">Reports</a></li>
+                    <li><a onclick="logout()">Logout</a></li>
+                </ul>
+            </nav>
+            
+            <main class="main-content">
+                <header>
+                    <h1>Admin Dashboard</h1>
+                </header>
+                
+                <!-- Admin Users Section -->
+                <section id="adminUsers" class="section active">
+                    <h2>Manage Users</h2>
+                    <div id="adminUsersList"></div>
+                </section>
+                
+                <!-- Admin Doctors Section -->
+                <section id="adminDoctors" class="section">
+                    <h2>Manage Doctors</h2>
+                    <button onclick="showAddDoctorForm()" class="btn btn-primary">Add New Doctor</button>
+                    <div id="adminDoctorsList"></div>
+                    
+                    <!-- Add Doctor Form -->
+                    <div id="addDoctorForm" style="display:none; margin-top:20px;">
+                        <h3>Add New Doctor</h3>
+                        <form id="doctorForm">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="doctorName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Specialization</label>
+                                <input type="text" id="doctorSpec" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Contact</label>
+                                <input type="tel" id="doctorContact" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Available From</label>
+                                <input type="time" id="availableFrom" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Available To</label>
+                                <input type="time" id="availableTo" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Doctor</button>
+                            <button type="button" onclick="hideAddDoctorForm()" class="btn btn-secondary">Cancel</button>
+                        </form>
+                    </div>
+                </section>
+                
+                <!-- Admin Appointments Section -->
+                <section id="adminAppointments" class="section">
+                    <h2>All Appointments</h2>
+                    <div id="adminAppointmentsList"></div>
+                </section>
+                
+                <!-- Admin Reports Section -->
+                <section id="adminReports" class="section">
+                    <h2>Reports</h2>
+                    <button onclick="loadDoctorReport()" class="btn btn-primary">Doctor Usage Report</button>
+                    <button onclick="loadPatientReport()" class="btn btn-secondary">Patient Visits Report</button>
+                    <div id="reportData"></div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- ============================================
+         JAVASCRIPT
+    ============================================ -->
+    <script>
+        // ==================== GLOBAL VARIABLES ====================
+        const API_URL = 'http://localhost:8080/api';
+        let currentUser = null;
+        let currentToken = null;
+
+        // ==================== VIEW MANAGEMENT ====================
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        function showUserSection(sectionId) {
+            document.querySelectorAll('#userDashboardView .section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function showAdminSection(sectionId) {
+            document.querySelectorAll('#adminDashboardView .section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Load data when section is shown
+            if (sectionId === 'adminUsers') loadAdminUsers();
+            if (sectionId === 'adminDoctors') loadAdminDoctors();
+            if (sectionId === 'adminAppointments') loadAdminAppointments();
+        }
+
+        // ==================== AUTH FUNCTIONS ====================
+        function getToken() {
+            return localStorage.getItem('token');
+        }
+
+        function getUser() {
+            const userStr = localStorage.getItem('user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            currentUser = null;
+            currentToken = null;
+            showView('landingView');
+        }
+
+        async function apiCall(endpoint, method = 'GET', body = null) {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            const token = getToken();
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            const options = { method, headers };
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}${endpoint}`, options);
+                
+                if (response.status === 403 || response.status === 401) {
+                    alert('Session expired. Please login again.');
+                    logout();
+                    return null;
+                }
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || `HTTP error! status: ${response.status}`);
+                }
+                
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    return await response.json();
+                }
+                return await response.text();
+            } catch (error) {
+                console.error('API call error:', error);
+                throw error;
+            }
+        }
+
+        function showMessage(message, type, elementId) {
+            const messageDiv = document.getElementById(elementId);
+            messageDiv.textContent = message;
+            messageDiv.className = 'message ' + type;
+            
+            setTimeout(() => {
+                messageDiv.className = 'message';
+            }, 5000);
+        }
+
+        // ==================== REGISTER ====================
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('regName').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value,
+                contact_no: document.getElementById('regContact').value
+            };
+            
+            try {
+                await apiCall('/auth/register', 'POST', formData);
+                showMessage('Registration successful! Redirecting to login...', 'success', 'regMessage');
+                setTimeout(() => {
+                    showView('loginView');
+                }, 2000);
+            } catch (error) {
+                showMessage('Registration failed: ' + error.message, 'error', 'regMessage');
+            }
+        });
+
+        // ==================== LOGIN ====================
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const credentials = {
+                email: document.getElementById('loginEmail').value,
+                password: document.getElementById('loginPassword').value
+            };
+            
+            try {
+                const data = await apiCall('/auth/login', 'POST', credentials);
+                
+                if (data && data.token) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data));
+                    currentUser = data;
+                    currentToken = data.token;
+                    
+                    showMessage('Login successful! Redirecting...', 'success', 'loginMessage');
+                    
+                    setTimeout(() => {
+                        if (data.role === 'ADMIN') {
+                            showView('adminDashboardView');
+                            loadAdminUsers();
+                            loadAdminDoctors();
+                            loadAdminAppointments();
+                        } else {
+                            document.getElementById('userName').textContent = data.name;
+                            showView('userDashboardView');
+                            loadUserProfile();
+                            loadUserDoctors();
+                            loadUserAppointments();
+                            loadDoctorsForBooking();
+                        }
+                    }, 1000);
+                }
+            } catch (error) {
+                showMessage('Login failed: ' + error.message, 'error', 'loginMessage');
+            }
+        });
+
+        // ==================== USER DASHBOARD FUNCTIONS ====================
+        async function loadUserProfile() {
+            try {
+                const profile = await apiCall('/user/profile');
+                document.getElementById('profileData').innerHTML = `
+                    <div class="card">
+                        <p><strong>Name:</strong> ${profile.name}</p>
+                        <p><strong>Email:</strong> ${profile.email}</p>
+                        <p><strong>Contact:</strong> ${profile.contact_no}</p>
+                        <p><strong>Role:</strong> ${profile.role}</p>
+                        <p><strong>Member Since:</strong> ${new Date(profile.join_date).toLocaleDateString()}</p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        async function loadUserDoctors() {
+            try {
+                const doctors = await apiCall('/doctors');
+                document.getElementById('userDoctorsList').innerHTML = doctors.map(doctor => `
+                    <div class="card">
+                        <h3>Dr. ${doctor.name}</h3>
+                        <p><strong>Specialization:</strong> ${doctor.specialization}</p>
+                        <p><strong>Contact:</strong> ${doctor.contact_no}</p>
+                        <p><strong>Available:</strong> ${doctor.available_from} - ${doctor.available_to}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading doctors:', error);
+            }
+        }
+
+        async function loadUserAppointments() {
+            try {
+                const appointments = await apiCall('/appointments/user');
+                const appointmentsList = document.getElementById('userAppointmentsList');
+                
+                if (appointments.length === 0) {
+                    appointmentsList.innerHTML = '<p>No appointments found.</p>';
+                    return;
+                }
+                
+                appointmentsList.innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Reason</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${appointments.map(apt => `
+                                <tr>
+                                    <td>Dr. ${apt.doctor.name}</td>
+                                    <td>${apt.appointment_date}</td>
+                                    <td>${apt.appointment_time}</td>
+                                    <td>${apt.status}</td>
+                                    <td>${apt.reason}</td>
+                                    <td>
+                                        <button onclick="deleteUserAppointment(${apt.appointment_id})" class="btn btn-danger">Cancel</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+            }
+        }
+
+        async function loadDoctorsForBooking() {
+            try {
+                const doctors = await apiCall('/doctors');
+                document.getElementById('doctorSelect').innerHTML = 
+                    '<option value="">Select a doctor</option>' +
+                    doctors.map(doctor => 
+                        `<option value="${doctor.doctor_id}">Dr. ${doctor.name} - ${doctor.specialization}</option>`
+                    ).join('');
+            } catch (error) {
+                console.error('Error loading doctors:', error);
+            }
+        }
+
+        document.getElementById('bookForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const appointmentData = {
+                doctor: {
+                    doctor_id: parseInt(document.getElementById('doctorSelect').value)
+                },
+                appointment_date: document.getElementById('appointmentDate').value,
+                appointment_time: document.getElementById('appointmentTime').value + ':00',
+                reason: document.getElementById('reason').value
+            };
+            
+            try {
+                await apiCall('/appointments', 'POST', appointmentData);
+                showMessage('Appointment booked successfully!', 'success', 'bookMessage');
+                document.getElementById('bookForm').reset();
+                loadUserAppointments();
+            } catch (error) {
+                showMessage('Error booking appointment: ' + error.message, 'error', 'bookMessage');
+            }
+        });
+
+        async function deleteUserAppointment(id) {
+            if (!confirm('Are you sure you want to cancel this appointment?')) return;
+            
+            try {
+                await apiCall(`/appointments/${id}`, 'DELETE');
+                alert('Appointment cancelled successfully!');
+                loadUserAppointments();
+            } catch (error) {
+                alert('Error cancelling appointment: ' + error.message);
+            }
+        }
+
+        // ==================== ADMIN DASHBOARD FUNCTIONS ====================
+        async function loadAdminUsers() {
+            try {
+                const users = await apiCall('/admin/users');
+                document.getElementById('adminUsersList').innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${users.map(user => `
+                                <tr>
+                                    <td>${user.user_id}</td>
+                                    <td>${user.name}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.role}</td>
+                                    <td>${user.contact_no}</td>
+                                    <td>
+                                        <button onclick="deleteAdminUser(${user.user_id})" class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        async function loadAdminDoctors() {
+            try {
+                const doctors = await apiCall('/admin/doctors');
+                document.getElementById('adminDoctorsList').innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Specialization</th>
+                                <th>Contact</th>
+                                <th>Available</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${doctors.map(doctor => `
+                                <tr>
+                                    <td>${doctor.doctor_id}</td>
+                                    <td>${doctor.name}</td>
+                                    <td>${doctor.specialization}</td>
+                                    <td>${doctor.contact_no}</td>
+                                    <td>${doctor.available_from} - ${doctor.available_to}</td>
+                                    <td>
+                                        <button onclick="deleteAdminDoctor(${doctor.doctor_id})" class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading doctors:', error);
+            }
+        }
+
+        function showAddDoctorForm() {
+            document.getElementById('addDoctorForm').style.display = 'block';
+        }
+
+        function hideAddDoctorForm() {
+            document.getElementById('addDoctorForm').style.display = 'none';
+            document.getElementById('doctorForm').reset();
+        }
+
+        document.getElementById('doctorForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const doctorData = {
+                name: document.getElementById('doctorName').value,
+                specialization: document.getElementById('doctorSpec').value,
+                contact_no: document.getElementById('doctorContact').value,
+                available_from: document.getElementById('availableFrom').value + ':00',
+                available_to: document.getElementById('availableTo').value + ':00'
+            };
+            
+            try {
+                await apiCall('/admin/doctors', 'POST', doctorData);
+                alert('Doctor added successfully!');
+                hideAddDoctorForm();
+                loadAdminDoctors();
+            } catch (error) {
+                alert('Error adding doctor: ' + error.message);
+            }
+        });
+
+        async function loadAdminAppointments() {
+            try {
+                const appointments = await apiCall('/admin/appointments');
+                const appointmentsList = document.getElementById('adminAppointmentsList');
+                
+                if (appointments.length === 0) {
+                    appointmentsList.innerHTML = '<p>No appointments found.</p>';
+                    return;
+                }
+                
+                appointmentsList.innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${appointments.map(apt => `
+                                <tr>
+                                    <td>${apt.appointment_id}</td>
+                                    <td>${apt.user.name}</td>
+                                    <td>Dr. ${apt.doctor.name}</td>
+                                    <td>${apt.appointment_date}</td>
+                                    <td>${apt.appointment_time}</td>
+                                    <td>${apt.status}</td>
+                                    <td>
+                                        <button onclick="deleteAdminAppointment(${apt.appointment_id})" class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+            }
+        }
+
+        async function deleteAdminUser(id) {
+            if (!confirm('Delete this user?')) return;
+            try {
+                await apiCall(`/admin/users/${id}`, 'DELETE');
+                alert('User deleted!');
+                loadAdminUsers();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function deleteAdminDoctor(id) {
+            if (!confirm('Delete this doctor?')) return;
+            try {
+                await apiCall(`/admin/doctors/${id}`, 'DELETE');
+                alert('Doctor deleted!');
+                loadAdminDoctors();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function deleteAdminAppointment(id) {
+            if (!confirm('Delete this appointment?')) return;
+            try {
+                await apiCall(`/admin/appointments/${id}`, 'DELETE');
+                alert('Appointment deleted!');
+                loadAdminAppointments();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function loadDoctorReport() {
+            try {
+                const report = await apiCall('/admin/reports/doctor-usage');
+                document.getElementById('reportData').innerHTML = `
+                    <h3>Doctor Usage Report</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Specialization</th>
+                                <th>Total Appointments</th>
+                                <th>Completed</th>
+                                <th>Cancelled</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${report.map(row => `
+                                <tr>
+                                    <td>${row[0]}</td>
+                                    <td>${row[1]}</td>
+                                    <td>${row[2]}</td>
+                                    <td>${row[3]}</td>
+                                    <td>${row[4]}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading report:', error);
+            }
+        }
+
+        async function loadPatientReport() {
+            try {
+                const report = await apiCall('/admin/reports/patient-visits');
+                document.getElementById('reportData').innerHTML = `
+                    <h3>Patient Visits Report</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Email</th>
+                                <th>Total Visits</th>
+                                <th>Last Visit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${report.map(row => `
+                                <tr>
+                                    <td>${row[0]}</td>
+                                    <td>${row[1]}</td>
+                                    <td>${row[2]}</td>
+                                    <td>${row[3] || 'No visits'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading report:', error);
+            }
+        }
+    </script>
+</body>
+</html>
