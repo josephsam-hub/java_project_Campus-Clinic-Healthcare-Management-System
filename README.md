@@ -312,31 +312,6 @@ The application will start at: **http://localhost:8080**
 
 ---
 
-## 📸 Screenshots
-
-### Landing Page
-![Landing Page](https://via.placeholder.com/800x400/667eea/ffffff?text=Campus+Clinic+Landing+Page)
-
-### Login Page
-![Login Page](https://via.placeholder.com/800x400/764ba2/ffffff?text=Login+Page)
-
-### User Dashboard
-[6]
-
-### Doctor List
-![Doctor List](https://via.placeholder.com/800x400/667eea/ffffff?text=Available+Doctors)
-
-### Book Appointment
-[7]
-
-### Admin Dashboard
-[6]
-
-### Reports
-![Reports](https://via.placeholder.com/800x400/764ba2/ffffff?text=Admin+Reports)
-
----
-
 ## 🧪 Testing
 
 ### Using Postman
@@ -436,39 +411,3 @@ Contributions are welcome! Please follow these steps:
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 👨‍💻 Authors
-
-- **Your Name** - *Initial work* - [YourGitHub](https://github.com/yourusername)
-
----
-
-## 🙏 Acknowledgments
-
-- Spring Boot Documentation
-- PostgreSQL Community
-- JWT.io
-- All contributors and testers
-
----
-
-## 📞 Support
-
-For support, email support@campusclinic.com or open an issue in the GitHub repository.
-
----
-
-## 🔗 Links
-
-- **GitHub Repository:** https://github.com/yourusername/campus-clinic
-- **Live Demo:** Coming Soon
-- **Documentation:** [Wiki](https://github.com/yourusername/campus-clinic/wiki)
-
----
-
-**Made with ❤️ for Campus Healthcare**
